@@ -9,7 +9,8 @@ public class JavaApplication1 {
     //Se generan los resultados y una variable extra en caso de que sea necesaria
     static List<String> result = new ArrayList<>();
     static String semillaArreglada;
-
+    static int semillaLength;
+    
     public static void main(String[] args) {
        //Creamos el scanner para ller datos del teclado y creamos una variable para almacenar la semilla
         Scanner sc = new Scanner(System.in);
@@ -20,10 +21,10 @@ public class JavaApplication1 {
             System.out.println("Dame cadena");
 
             semilla = sc.nextLine();
-            long l=99999*99999;
-            System.out.println(l);
+            
         } while (semilla.length() < 4 || semilla.length() > 8);
-
+        semillaLength = semilla.length();
+        
         /*
             Tratamos de ejecutar el metodo "Aleatorio" que realiza el procedimiento
             El programa terminará cuando encuentre 0000 en los digitos por ejemplo:
@@ -53,8 +54,7 @@ public class JavaApplication1 {
 
     static void Aleatorio(int numero) {
         //Obtenemos el numero del teclado y lo elevamos al cuadrado
-        long numeCuadrado = numero * numero;
-        
+        long numeCuadrado =(long)Math.pow(numero,2);
         //Se realizaran 10 iteraciones, pueden ser cambiadas de acuerdo a la necesidad
         for (int i = 0; i < 10; i++) {
             //El numeroCuadrado lo pasamos a String con el fin de poder manejarlo de manera más sencilla
@@ -76,31 +76,27 @@ public class JavaApplication1 {
             result.add(checkChar("" + getMiddleNumbers(CadeN2)));
             //Obtenemos nuestra nueva semilla
             numeCuadrado = getMiddleNumbers(CadeN2);
-            numeCuadrado *= numeCuadrado;
+            numeCuadrado = (long)Math.pow(numeCuadrado,2);
         }
 
     }
 
     static String checkChar(String resultado) {
         //Se realiza la conversion a numero decimal
-        switch (resultado.length()) {
-            case 1:
-                return "0.000" + resultado;
-            case 2:
-                return "0.00" + resultado;
-            case 3:
-                return "0.0" + resultado;
-            case 4:
-                return "0." + resultado;
-
+        
+        int iterations = semillaLength-resultado.length();
+        String back = "0.";
+        for(int i = 0; i<iterations; i++){
+            back +="0";
         }
-        return null;
+       
+        return back+resultado;
 
     }
 
     static int getMiddleNumbers(String semilla) {
         //Revisamos si la longitud de la semilla es par o impar
-        if (semilla.length() % 2 != 0)
+        if (semilla.length() % 2 != semillaLength % 2 )
             semillaArreglada = "0" + semilla;
          else 
             semillaArreglada = semilla;
@@ -108,7 +104,7 @@ public class JavaApplication1 {
         Con la semillaArreglada obtenemos los valores para no utilizar los caracteres izquierdos y derechos
         Sabremos cuales son los 4 digitos del centro sin importar la longitud del arreglo
         */
-        int resultado = (semillaArreglada.length() - 4) / 2;
+        int resultado = (semillaArreglada.length() - semillaLength) / 2;
         //Regresamos los 4 digitos del centro
         return Integer.parseInt(semillaArreglada.substring(resultado, semillaArreglada.length() - resultado));
 
